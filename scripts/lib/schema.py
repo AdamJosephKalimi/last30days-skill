@@ -156,6 +156,9 @@ class Report:
     # Status tracking
     reddit_error: Optional[str] = None
     x_error: Optional[str] = None
+    # Cache info
+    from_cache: bool = False
+    cache_age_hours: Optional[float] = None
 
     def to_dict(self) -> Dict[str, Any]:
         d = {
@@ -178,6 +181,10 @@ class Report:
             d['reddit_error'] = self.reddit_error
         if self.x_error:
             d['x_error'] = self.x_error
+        if self.from_cache:
+            d['from_cache'] = self.from_cache
+        if self.cache_age_hours is not None:
+            d['cache_age_hours'] = self.cache_age_hours
         return d
 
     @classmethod
@@ -248,6 +255,8 @@ class Report:
             context_snippet_md=data.get('context_snippet_md', ''),
             reddit_error=data.get('reddit_error'),
             x_error=data.get('x_error'),
+            from_cache=data.get('from_cache', False),
+            cache_age_hours=data.get('cache_age_hours'),
         )
 
 

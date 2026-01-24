@@ -236,11 +236,13 @@ def main():
     progress = ui.ProgressDisplay(args.topic, show_banner=True)
 
     if not args.refresh and not args.mock:
-        cached = cache.load_cache(cache_key)
+        cached, cache_age = cache.load_cache_with_age(cache_key)
         if cached:
             # Use cached data
-            progress.show_cached()
+            progress.show_cached(cache_age)
             report = schema.Report.from_dict(cached)
+            report.from_cache = True
+            report.cache_age_hours = cache_age
             output_result(report, args.emit)
             return
 

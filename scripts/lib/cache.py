@@ -57,6 +57,39 @@ def load_cache(cache_key: str, ttl_hours: int = DEFAULT_TTL_HOURS) -> Optional[d
         return None
 
 
+def get_cache_age_hours(cache_path: Path) -> Optional[float]:
+    """Get age of cache file in hours."""
+    if not cache_path.exists():
+        return None
+    try:
+        stat = cache_path.stat()
+        mtime = datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc)
+        now = datetime.now(timezone.utc)
+        return (now - mtime).total_seconds() / 3600
+    except OSError:
+        return None
+
+
+def load_cache_with_age(cache_key: str, ttl_hours: int = DEFAULT_TTL_HOURS) -> tuple:
+    """Load data from cache with age info.
+
+    Returns:
+        Tuple of (data, age_hours) or (None, None) if invalid
+    """
+    cache_path = get_cache_path(cache_key)
+
+    if not is_cache_valid(cache_path, ttl_hours):
+        return None, None
+
+    age = get_cache_age_hours(cache_path)
+
+    try:
+        with open(cache_path, 'r') as f:
+            return json.load(f), age
+    except (json.JSONDecodeError, OSError):
+        return None, None
+
+
 def save_cache(cache_key: str, data: dict):
     """Save data to cache."""
     ensure_cache_dir()
