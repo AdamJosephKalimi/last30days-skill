@@ -74,33 +74,25 @@ echo "Please edit it to add your API keys, then run the skill again."
 
 ---
 
-## Research Execution: Three Parallel Agents
+## Research Execution
 
 **Display this to the user immediately:**
 ```
 🚀 Deploying research agents...
 ├─ 🟠 Reddit Agent: Scanning subreddits for discussions...
-├─ 🔵 X Agent: Following the conversation on X...
-└─ 🌐 Web Agent: Searching blogs, docs, and news...
+└─ 🔵 X Agent: Following the conversation on X...
 ```
 
-**Run all three agents IN PARALLEL:**
-
-**Agent 1: Reddit + X** (via Python script)
+**Run the research script:**
 ```bash
 python3 ~/.claude/skills/last30days/scripts/last30days.py "$ARGUMENTS" --emit=compact 2>&1
 ```
 
-**Agent 2: WebSearch** (run simultaneously using WebSearch tool)
-Search for: `{TOPIC} 2026` (or current year)
-- Find 8-15 high-quality web pages
-- EXCLUDE reddit.com, x.com, twitter.com (covered by Agent 1)
+**Then run WebSearch** (these will show as visible tool calls):
+- Search for: `{TOPIC} 2026` (or current year) - find 8-15 pages
+- Search for: `{TOPIC} best practices tutorial guide` - find 5-10 more
+- EXCLUDE reddit.com, x.com, twitter.com (already covered)
 - INCLUDE: blogs, tutorials, docs, news, GitHub repos
-
-**Agent 3: Backup WebSearch** (different angle)
-Search for: `{TOPIC} best practices tutorial guide`
-- Find 5-10 additional sources
-- Focus on how-to content and authoritative guides
 
 **Depth options** (passed through from user's command):
 - `--quick` → Faster, fewer sources (8-12 each)
@@ -111,14 +103,14 @@ Search for: `{TOPIC} best practices tutorial guide`
 
 ## Judge Agent: Synthesize All Sources
 
-**After all agents complete, display:**
+**After all searches complete, display:**
 ```
-✅ All agents reported back
-├─ Reddit Agent: Found {n} threads
-├─ X Agent: Found {n} posts
-└─ Web Agent: Found {n} pages
+✅ Research complete
+├─ Reddit: Found {n} threads
+├─ X: Found {n} posts
+└─ Web: Found {n} pages
 
-⚖️ Judge Agent: Synthesizing insights...
+⚖️ Synthesizing insights...
 ```
 
 **The Judge Agent must:**
