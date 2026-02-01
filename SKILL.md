@@ -1,6 +1,6 @@
 ---
 name: last30days
-description: Research a topic from the last 30 days on Reddit + X + Web, become an expert, and write copy-paste-ready prompts for the user's target tool.
+description: Research a topic from the last 30 days on Reddit + X + Web, become an expert, and write copy-paste-ready prompts for the user's target tool. USE WHEN last 30 days, recent news, trending, what's new, latest updates, recent research, what are people saying, current discussion, recent recommendations.
 argument-hint: "[topic] for [tool]" or "[topic]"
 context: fork
 agent: Explore
